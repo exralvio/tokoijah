@@ -20,7 +20,7 @@ func ProductsReport(w http.ResponseWriter, r *http.Request){
 	defer db.Close()
 
 	var products []models.Product
-	db.Preload("Purchases").Find(&products)
+	db.Find(&products)
 
 	var product_items []models.ProductItem
 	var product_item models.ProductItem

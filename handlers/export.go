@@ -203,7 +203,7 @@ func ExportSalesReport(w http.ResponseWriter, r *http.Request){
 	defer db.Close()
 
 	var orders []models.Order
-	db.Preload("Product").Preload("Purchases").Find(&orders)
+	db.Find(&orders)
 
 	datas = datas[:0]
 	for _, order := range orders {
