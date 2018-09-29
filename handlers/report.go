@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/exralvio/tokoijah/models"
 	"github.com/jinzhu/gorm"
+	"math"
 	"net/http"
 )
 
@@ -29,8 +30,8 @@ func ProductsReport(w http.ResponseWriter, r *http.Request){
 		product_item.Sku = product.Sku
 		product_item.Name = product.Name
 		product_item.Qty = product.Qty
-		product_item.Average = average
-		product_item.Total = (float64(product.Qty) * average)
+		product_item.Average = int(math.Round(average))
+		product_item.Total = int(math.Round((float64(product.Qty) * average)))
 
 		product_items = append(product_items, product_item)
 	}
@@ -49,8 +50,10 @@ func SalesReport(w http.ResponseWriter, r *http.Request){
 	defer db.Close()
 
 	var orders []models.Order
-	db.Preload("Product").Preload("Purchases").Find(&orders)
+	db.Find(&orders)
 
+	json.NewEncoder(w).Encode(orders)
+	return
 	var sales []models.SaleItem
 	var sale models.SaleItem
 	for _, order := range orders {

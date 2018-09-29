@@ -101,4 +101,10 @@ var routes = Routes{
 		"/export/salesreport",
 		handler.ExportSalesReport,
 	},
+	{
+		"ImportXls",
+		"GET",
+		"/import",
+		handler.ImportXls,
+	},
 }

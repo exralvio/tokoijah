@@ -4,8 +4,8 @@ type ProductItem struct {
 	Sku			string		`json:"sku"`
 	Name		string		`json:"name"`
 	Qty			int			`json:"qty"`
-	Average		float64		`json:"average"`
-	Total		float64		`json:"total"`
+	Average		int		`json:"average"`
+	Total		int		`json:"total"`
 }
 
 type SaleItem struct {

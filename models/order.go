@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Order struct {
 	gorm.Model
-	ProductID		uint		`json:"product_id", omitempty`
+	ProductID		int			//`json:"product_id", omitempty`
 	Invoice			string
 	Product			Product		`gorm:"foreignkey:ProductID"`
 	Purchases		[]*Purchase	`gorm:"foreignkey:ProductID;association_foreignkey:ProductID"`
