@@ -48,6 +48,12 @@ var routes = Routes{
 		handler.DeleteProduct,
 	},
 	{
+		"GetALlPurchase",
+		"GET",
+		"/purchase",
+		handler.AllPurchases,
+	},
+	{
 		"CreatePurchase",
 		"POST",
 		"/purchase",
