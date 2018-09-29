@@ -115,8 +115,8 @@ var routes = Routes{
 	},
 	{
 		"ImportXls",
-		"GET",
+		"POST",
 		"/import",
-		handler.ImportXls,
+		handler.UploadFile,
 	},
 }

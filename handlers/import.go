@@ -6,6 +6,8 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/exralvio/tokoijah/models"
 	"github.com/jinzhu/gorm"
+	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"strconv"
 	"time"
@@ -13,28 +15,61 @@ import (
 	//"time"
 )
 
+func UploadFile(w http.ResponseWriter, r *http.Request){
+	file, handle, err := r.FormFile("file")
+	if err != nil {
+		fmt.Fprintf(w, "%w", err)
+		return
+	}
+	defer file.Close()
 
-func ImportXls(w http.ResponseWriter, r *http.Request){
+	mimeType := handle.Header.Get("Content-Type")
+	if mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"{
+		saveFile(w, file, handle)
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(JsonMessage{"Success!"})
+}
+
+func saveFile(w http.ResponseWriter, file multipart.File, handle *multipart.FileHeader){
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Fprintf(w, "%w", err)
+		return
+	}
+
+	err = ioutil.WriteFile("./import/"+handle.Filename, data, 0666)
+	if err != nil {
+		fmt.Fprintf(w, "%w", err)
+		return
+	}
+
+	ImportXls(handle.Filename)
+}
+
+
+func ImportXls(filename string){
 	db, err = gorm.Open("sqlite3", "./tokoijah.db")
 	if err != nil{
 		panic("Could not connect to the datbase")
 	}
 	defer db.Close()
 
-	xlsx, err := excelize.OpenFile("./tokoijah.xlsx")
+	xlsx, err := excelize.OpenFile("./import/"+filename)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	//rows_product := xlsx.GetRows("Catatan Jumlah Barang")
-	//ImportProduct(rows_product)
+	rows_product := xlsx.GetRows("Catatan Jumlah Barang")
+	ImportProduct(rows_product)
 	rows_purchase := xlsx.GetRows("Catatan Barang Masuk")
 	ImportPurchase(rows_purchase)
 	rows_orders := xlsx.GetRows("Catatan Barang Keluar")
 	ImportOrder(rows_orders)
 
-	json.NewEncoder(w).Encode(JsonMessage{"Success!"})
 }
 
 func ImportProduct(rows [][]string){
