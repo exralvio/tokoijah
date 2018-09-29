@@ -50,19 +50,25 @@ var routes = Routes{
 	{
 		"GetALlPurchase",
 		"GET",
-		"/purchase",
+		"/purchases",
 		handler.AllPurchases,
 	},
 	{
 		"CreatePurchase",
 		"POST",
-		"/purchase",
+		"/purchases",
 		handler.CreatePurchase,
+	},
+	{
+		"GetAllOrder",
+		"Get",
+		"/orders",
+		handler.AllOrder,
 	},
 	{
 		"CreateOrder",
 		"POST",
-		"/order",
+		"/orders",
 		handler.CreateOrder,
 	},
 	{

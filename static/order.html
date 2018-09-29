@@ -82,7 +82,7 @@
 			<div id="content">
 				<section class="style-default-bright">
 					<div class="section-header">
-						<h2 class="text-primary">Catatan Barang Masuk</h2>
+						<h2 class="text-primary">Catatan Barang Keluar</h2>
 					</div>
 					<div class="section-body">
 
@@ -95,11 +95,9 @@
 												<th>Waktu</th>
 												<th>Sku</th>
 												<th>Nama Barang</th>
-												<th>Jumlah Pesanan</th>
-												<th>Jumlah Terima</th>
-												<th>Harga Beli</th>
+												<th>Jumlah Keluar</th>
+												<th>Harga Jual</th>
 												<th>Total</th>
-												<th>Nota Kwitansi</th>
 												<th>Catatan</th>
 											</tr>
 										</thead>
@@ -149,14 +147,14 @@
 							</a>
 						</li><!--end /menu-li -->
 
-						<li class="active">
+						<li>
 							<a href="/static/purchase.html">
 								<div class="gui-icon"><i class="md md-play-download"></i></div>
 								<span class="title">Purchase</span>
 							</a>
 						</li><!--end /menu-li -->
 
-						<li>
+						<li class="active">
 							<a href="/static/order.html">
 								<div class="gui-icon"><i class="md md-shopping-cart"></i></div>
 								<span class="title">Order</span>
@@ -225,7 +223,7 @@
 		<script type="text/javascript">
 			$(function(){
 				$('#customdt').DataTable({
-					"ajax": "/v1/purchases",
+					"ajax": "/v1/orders",
 					"pageLength": 25
 				});
 			});

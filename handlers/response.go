@@ -15,7 +15,7 @@ type ProductResponse struct {
 }
 
 type OrderResponse struct {
-	Data	[]models.Order		`json:"data"`
+	Data	[][]string		`json:"data"`
 }
 
 type PurchaseResponse struct {

@@ -5,10 +5,50 @@ import (
 	"fmt"
 	"github.com/exralvio/tokoijah/models"
 	"github.com/jinzhu/gorm"
+	"math"
 	"net/http"
 	"strconv"
 	"time"
 )
+
+func AllOrder(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	db, err = gorm.Open("sqlite3", "./tokoijah.db")
+	if err != nil{
+		panic("Could not connect to the datbase")
+	}
+	defer db.Close()
+
+	var orders []models.Order
+	db.Find(&orders)
+
+	var datas = [][]string{}
+	for _, order := range orders {
+		product_detail := models.GetOneProduct(db, order.ProductID)
+
+		date := order.CreatedAt.Format("2006-01-02 15:04:05")
+		sku := product_detail.Sku
+		name := product_detail.Name
+		qty := strconv.Itoa(order.Qty)
+		price := strconv.Itoa(int(math.Round(order.Price)))
+		total := strconv.Itoa(int(math.Round(order.Total)))
+		note := order.Note
+
+		datas = append(datas, []string {
+			date,
+			sku,
+			name,
+			qty,
+			price,
+			total,
+			note,
+		})
+	}
+
+	json.NewEncoder(w).Encode(OrderResponse{Data: datas})
+}
 
 func CreateOrder(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
