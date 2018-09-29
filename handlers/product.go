@@ -26,7 +26,7 @@ func AllProducts(w http.ResponseWriter, r *http.Request){
 	var products []models.Product
 	db.Find(&products)
 
-	json.NewEncoder(w).Encode(products)
+	json.NewEncoder(w).Encode(ProductResponse{Data: products})
 }
 
 func GetProduct(w http.ResponseWriter, r *http.Request){
