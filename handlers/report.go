@@ -8,14 +8,6 @@ import (
 	"net/http"
 )
 
-type ProductItem struct {
-	Sku			string		`json:"sku"`
-	Name		string		`json:"name"`
-	Qty			int			`json:"qty"`
-	Average		float64		`json:"average"`
-	Total		float64		`json:"total"`
-}
-
 func ProductsReport(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
@@ -29,10 +21,10 @@ func ProductsReport(w http.ResponseWriter, r *http.Request){
 	var products []models.Product
 	db.Preload("Purchases").Find(&products)
 
-	var product_items []ProductItem
-	var product_item ProductItem
+	var product_items []models.ProductItem
+	var product_item models.ProductItem
 	for _, product := range products {
-		average := SumBuyPrice(product.Purchases)
+		average := models.SumBuyPrice(product.Purchases)
 
 		product_item.Sku = product.Sku
 		product_item.Name = product.Name
@@ -44,18 +36,6 @@ func ProductsReport(w http.ResponseWriter, r *http.Request){
 	}
 
 	json.NewEncoder(w).Encode(product_items)
-}
-
-type SaleItem struct {
-	Invoice			string		`json:"invoice"`
-	Date			string		`json:"date"`
-	Sku				string		`json:"sku"`
-	Name			string		`json:"name"`
-	Qty				int			`json:"qty"`
-	SalePrice		float64		`json:"sale_price"`
-	Total			float64		`json:"total"`
-	BuyPrice		float64		`json:"buy_price"`
-	Profit			float64		`json:"profit"`
 }
 
 func SalesReport(w http.ResponseWriter, r *http.Request){
@@ -71,11 +51,11 @@ func SalesReport(w http.ResponseWriter, r *http.Request){
 	var orders []models.Order
 	db.Preload("Product").Preload("Purchases").Find(&orders)
 
-	var sales []SaleItem
-	var sale SaleItem
+	var sales []models.SaleItem
+	var sale models.SaleItem
 	for _, order := range orders {
 
-		buyprice := SumBuyPrice(order.Purchases)
+		buyprice := models.SumBuyPrice(order.Purchases)
 
 		sale.Invoice = order.Invoice
 		sale.Date = fmt.Sprint(order.CreatedAt.Format("2006-01-02 15:04:05"))
@@ -90,22 +70,4 @@ func SalesReport(w http.ResponseWriter, r *http.Request){
 	}
 
 	json.NewEncoder(w).Encode(sales)
-}
-
-func SumBuyPrice(x[] *models.Purchase) float64{
-	if len(x) == 0 {
-		return 0
-	}
-
-	var total_price, result float64
-	var total_receive int
-
-	for _, value := range x {
-		total_price += value.Total
-		total_receive += value.NumberReceive
-	}
-
-	result = total_price / float64(total_receive)
-
-	return result
 }

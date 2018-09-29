@@ -71,4 +71,34 @@ var routes = Routes{
 		"/report/sales",
 		handler.SalesReport,
 	},
+	{
+		"ExportProducts",
+		"GET",
+		"/export/products",
+		handler.ExportProducts,
+	},
+	{
+		"ExportPurchases",
+		"GET",
+		"/export/purchases",
+		handler.ExportPurchases,
+	},
+	{
+		"ExportOrders",
+		"GET",
+		"/export/orders",
+		handler.ExportOrders,
+	},
+	{
+		"ExportProductsReport",
+		"GET",
+		"/export/productsreport",
+		handler.ExportProductsReport,
+	},
+	{
+		"ExportSalesReport",
+		"GET",
+		"/export/salesreport",
+		handler.ExportSalesReport,
+	},
 }
