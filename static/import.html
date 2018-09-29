@@ -95,11 +95,14 @@
 											</div>
 
 											<div class="form-group">
-												<input type="file" class="form-control" id="regular1">
+												<input type="file" class="form-control upload-file" id="regular1">
 												<label for="regular1">Xlsx</label>
 											</div>
 											<div class="form-group">
-												<button class="btn btn-primary">Submit</button>
+												<button type="submit" class="btn btn-primary btn-upload">Submit</button>
+											</div>
+											<div class="alert alert-success hide">
+												<strong>Success! Your file already imported.</strong>
 											</div>
 										</form>
 									</div><!--end .card-body -->
@@ -218,6 +221,44 @@
 		<script src="assets/js/core/demo/Demo.js"></script>
 		<script src="assets/js/core/demo/DemoTableDynamic.js"></script>
 		<!-- END JAVASCRIPT -->
+
+		<script type="text/javascript">
+			$(function(){
+				$('.importForm').on('submit', function(e){
+					e.preventDefault();
+
+					var file_data = $('.upload-file').prop('files')[0];
+					var form_data = new FormData();
+
+					form_data.append('file', file_data);
+
+					$('.upload-file').prop('disabled', true);
+					$('.btn-upload').prop('disabled', true);
+					$('.btn-upload').html("<i class='fa fa-spinner fa-spin'></i> Proccessing..");
+					$('.importForm .alert').addClass('hide');
+
+					$.ajax({
+						url: "/v1/import",
+						dataType: "text",
+						cache: false,
+						contentType: false,
+						processData: false,
+						data: form_data,
+						type: "post",
+						success: function(response){
+							$('.upload-file').prop('disabled', false);
+							$('.btn-upload').prop('disabled', false);
+							$('.btn-upload').html("SUBMIT");
+							$('.importForm')[0].reset();
+							$('.importForm .alert').removeClass('hide');
+						},
+						error: function(){
+							console.log("error");
+						}
+					});
+				});
+			});
+		</script>
 
 	</body>
 </html>

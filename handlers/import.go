@@ -16,6 +16,8 @@ import (
 )
 
 func UploadFile(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
 	file, handle, err := r.FormFile("file")
 	if err != nil {
 		fmt.Fprintf(w, "%w", err)
@@ -26,9 +28,12 @@ func UploadFile(w http.ResponseWriter, r *http.Request){
 	mimeType := handle.Header.Get("Content-Type")
 	if mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"{
 		saveFile(w, file, handle)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(JsonMessage{"The format file is not valid."})
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(JsonMessage{"Success!"})
 }
