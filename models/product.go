@@ -9,9 +9,15 @@ type Product struct {
 	Sku				string
 	Name			string
 	Qty				int
-	Purchases		[]*Purchase		`gorm:"foreignkey:ProductID"`
 }
 
 func ProductMigration(db *gorm.DB){
 	db.AutoMigrate(&Product{})
+}
+
+func GetOneProduct(db *gorm.DB, product_id int) Product {
+	product := Product{}
+	db.First(&product, product_id)
+
+	return product
 }

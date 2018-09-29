@@ -14,13 +14,13 @@ type SaleItem struct {
 	Sku				string		`json:"sku"`
 	Name			string		`json:"name"`
 	Qty				int			`json:"qty"`
-	SalePrice		float64		`json:"sale_price"`
-	Total			float64		`json:"total"`
-	BuyPrice		float64		`json:"buy_price"`
-	Profit			float64		`json:"profit"`
+	SalePrice		int		`json:"sale_price"`
+	Total			int		`json:"total"`
+	BuyPrice		int		`json:"buy_price"`
+	Profit			int		`json:"profit"`
 }
 
-func SumBuyPrice(x[] *Purchase) float64{
+func SumBuyPrice(x[] Purchase) float64{
 	if len(x) == 0 {
 		return 0
 	}

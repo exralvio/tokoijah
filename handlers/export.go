@@ -6,6 +6,7 @@ import (
 	"github.com/exralvio/tokoijah/models"
 	"github.com/jinzhu/gorm"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 	"time"
@@ -71,10 +72,12 @@ func ExportPurchases(w http.ResponseWriter, r *http.Request){
 
 	datas = datas[:0]
 	for _, purchase := range purchases {
+		product_detail := models.GetOneProduct(db, purchase.ProductID)
+
 		datas = append(datas, []string{
 			purchase.CreatedAt.Format("2006-01-02 15:04:05"),
-			purchase.Product.Sku,
-			purchase.Product.Name,
+			product_detail.Sku,
+			product_detail.Name,
 			strconv.Itoa(purchase.NumberOrder),
 			strconv.Itoa(purchase.NumberReceive),
 			strconv.Itoa(int(purchase.Price)),
@@ -115,10 +118,12 @@ func ExportOrders(w http.ResponseWriter, r *http.Request){
 
 	datas = datas[:0]
 	for _, order := range orders {
+		product_detail := models.GetOneProduct(db, order.ProductID)
+
 		datas = append(datas, []string{
 			order.CreatedAt.Format("2006-01-02 15:04:05"),
-			order.Product.Sku,
-			order.Product.Name,
+			product_detail.Sku,
+			product_detail.Name,
 			strconv.Itoa(order.Qty),
 			strconv.Itoa(int(order.Price)),
 			strconv.Itoa(int(order.Total)),
@@ -158,14 +163,15 @@ func ExportProductsReport(w http.ResponseWriter, r *http.Request){
 
 	datas = datas[:0]
 	for _, product := range products {
-		average := models.SumBuyPrice(product.Purchases)
+		product_purchase := models.PurchaseByProductId(db, int(product.ID))
+		average := models.SumBuyPrice(product_purchase)
 
 		datas = append(datas, []string{
 			product.Sku,
 			product.Name,
 			strconv.Itoa(product.Qty),
-			strconv.Itoa(int(average)),
-			strconv.Itoa(int((float64(product.Qty) * average))),
+			strconv.Itoa(int(math.Round(average))),
+			strconv.Itoa(int(math.Round((float64(product.Qty) * average)))),
 		})
 	}
 	/** End populating Data **/
@@ -201,13 +207,15 @@ func ExportSalesReport(w http.ResponseWriter, r *http.Request){
 
 	datas = datas[:0]
 	for _, order := range orders {
-		buyprice := models.SumBuyPrice(order.Purchases)
+		product_detail := models.GetOneProduct(db, order.ProductID)
+		product_purchase := models.PurchaseByProductId(db, order.ProductID)
+		buyprice := models.SumBuyPrice(product_purchase)
 
 		datas = append(datas, []string{
 			order.Invoice,
 			order.CreatedAt.Format("2006-01-02 15:04:05"),
-			order.Product.Sku,
-			order.Product.Name,
+			product_detail.Sku,
+			product_detail.Name,
 			strconv.Itoa(order.Qty),
 			strconv.Itoa(int(order.Price)),
 			strconv.Itoa(int(order.Total)),

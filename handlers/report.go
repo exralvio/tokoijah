@@ -25,7 +25,8 @@ func ProductsReport(w http.ResponseWriter, r *http.Request){
 	var product_items []models.ProductItem
 	var product_item models.ProductItem
 	for _, product := range products {
-		average := models.SumBuyPrice(product.Purchases)
+		product_purchase := models.PurchaseByProductId(db, int(product.ID))
+		average := models.SumBuyPrice(product_purchase)
 
 		product_item.Sku = product.Sku
 		product_item.Name = product.Name
@@ -52,23 +53,23 @@ func SalesReport(w http.ResponseWriter, r *http.Request){
 	var orders []models.Order
 	db.Find(&orders)
 
-	json.NewEncoder(w).Encode(orders)
-	return
 	var sales []models.SaleItem
 	var sale models.SaleItem
 	for _, order := range orders {
-
-		buyprice := models.SumBuyPrice(order.Purchases)
+		product_detail := models.GetOneProduct(db, order.ProductID)
+		product_purchase := models.PurchaseByProductId(db, order.ProductID)
+		buyprice := models.SumBuyPrice(product_purchase)
 
 		sale.Invoice = order.Invoice
 		sale.Date = fmt.Sprint(order.CreatedAt.Format("2006-01-02 15:04:05"))
-		sale.Sku = order.Product.Sku
-		sale.Name = order.Product.Name
+		sale.Sku = product_detail.Sku
+		sale.Name = product_detail.Name
 		sale.Qty = order.Qty
-		sale.SalePrice = order.Price
-		sale.Total = order.Total
-		sale.BuyPrice = buyprice
-		sale.Profit = order.Total - (buyprice * float64(order.Qty))
+		sale.SalePrice = int(order.Price)
+		sale.Total = int(order.Total)
+		sale.BuyPrice = int(math.Round(buyprice))
+		profit := order.Total - (buyprice * float64(order.Qty))
+		sale.Profit = int(math.Round(profit))
 		sales = append(sales, sale)
 	}
 
