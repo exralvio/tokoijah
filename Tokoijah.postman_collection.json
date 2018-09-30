@@ -1,0 +1,251 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Toko Ijah",
+		"_postman_id": "10438e7f-ad18-3428-006d-cbc066a925b9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product - All",
+			"request": {
+				"url": "localhost:8001/v1/products",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Product - Add",
+			"request": {
+				"url": "localhost:8001/v1/products",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sku\":\"SSI-D00864652-SS-NAV\",\n\t\"name\":\"Deklia Plain Casual Blouse (S,Navy)\",\n\t\"qty\": 2\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Product - Delete",
+			"request": {
+				"url": "localhost:8001/v1/products/3",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Product - Update",
+			"request": {
+				"url": "localhost:8001/v1/products/9",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sku\":\"SSI-D00791077-MM-BWH\",\n\t\"name\":\"Zalekia Plain Casual Blouse (M,Broken White)\",\n\t\"qty\":138\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase - Add",
+			"request": {
+				"url": "localhost:8001/v1/purchases",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_id\":10,\n\t\"number_order\":114,\n\t\"number_receive\":114,\n\t\"price\":60000,\n\t\"note\": \"2017/05/14 terima 114\",\n\t\"receipt\": \"20170911-39993\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase - All",
+			"request": {
+				"url": "localhost:8001/v1/purchases",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_id\":10,\n\t\"number_order\":114,\n\t\"number_receive\":114,\n\t\"price\":60000,\n\t\"note\": \"2017/05/14 terima 114\",\n\t\"receipt\": \"20170911-39993\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Order - Add",
+			"request": {
+				"url": "localhost:8001/v1/orders",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_id\":10,\n\t\"qty\": 1,\n\t\"price\": 115000\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Order - All",
+			"request": {
+				"url": "localhost:8001/v1/orders",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_id\":10,\n\t\"qty\": 1,\n\t\"price\": 115000\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Report - Sales",
+			"request": {
+				"url": "localhost:8001/v1/report/sales",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Report - Products",
+			"request": {
+				"url": "localhost:8001/v1/report/products",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Export - Products",
+			"request": {
+				"url": "http://localhost:8001/v1/export/products",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Export - Purchases",
+			"request": {
+				"url": "http://localhost:8001/v1/export/purchases",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Export - Orders",
+			"request": {
+				"url": "http://localhost:8001/v1/export/orders",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Export - Sales",
+			"request": {
+				"url": "http://localhost:8001/v1/export/salesreport",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Export - Products",
+			"request": {
+				"url": "http://localhost:8001/v1/export/productsreport",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Import Xls",
+			"request": {
+				"url": "http://localhost:8001/v1/import",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": "",
+							"description": "",
+							"type": "file"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
